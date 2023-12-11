@@ -78,11 +78,11 @@ void SSTF(int start) {
   }
 
   cout << "Track order: ";
-  for (const auto& track : tracks) {
-    if (&track == &tracks.back()) {
-      cout << track.track << endl;
+  for (int x : seq) {
+    if (x == seq.back()) {
+      cout << x << endl;
     } else {
-      cout << track.track << " → ";
+      cout << x << " → ";
     }
   }
 
