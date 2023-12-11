@@ -24,13 +24,17 @@ void printSeparator(char separatorChar = '-', int length = 50) {
 /* First come first served */
 void FCFS(int start) {
   initTracks();
-
   totalTrack = 0;
+  int prev = start;
   for (int i = 0; i < trackNum; i++) {
-    if (i != 0) {
-      totalTrack += abs(tracks[i].track - tracks[i - 1].track);
+    if (tracks[i].track == start) {
+      tracks[i].isVisited = true;
+      prev = start;
+    } else {
+      totalTrack += abs(tracks[i].track - prev);
+      tracks[i].isVisited = true;
+      prev = tracks[i].track;
     }
-    tracks[i].isVisited = true;
   }
 
   cout << "Track order: " << start << " → ";
