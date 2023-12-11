@@ -49,39 +49,58 @@ void FCFS(int start) {
 
 /* Shortest seek time first */
 int closest(int now);
+bool allTracksVisited();
 void SSTF(int start) {
   initTracks();
-
   totalTrack = 0;
-  for (int i = 0; i < trackNum; i++) {
-    if (i != 0) {
-      totalTrack +=
-          abs(tracks[closest(tracks[i - 1].track)].track - tracks[i - 1].track);
+
+  vector<int> seq;
+  seq.push_back(start);
+
+  int curr = start;
+  while (!allTracksVisited()) {
+    int minDiff = INT_MAX;
+    int nextTrack;
+    for (int i = 0; i < trackNum; i++) {
+      if (!tracks[i].isVisited && abs(tracks[i].track - curr) < minDiff) {
+        minDiff = abs(tracks[i].track - curr);
+        nextTrack = i;
+      }
     }
-    tracks[closest(tracks[i - 1].track)].isVisited = true;
+
+    tracks[nextTrack].isVisited = true;
+    totalTrack += minDiff;
+    seq.push_back(tracks[nextTrack].track);
+    curr = tracks[nextTrack].track;
   }
 
-  cout << "Track order: " << start << " → ";
-  for (const auto& track : tracks) {
-    cout << track.track << " → ";
+  cout << "Track order: ";
+  for (int x : seq) {
+    cout << x << " → ";
   }
   cout << endl;
 
   cout << "Total tracks traversed: " << totalTrack << endl << endl;
 }
-
 int closest(int now) {
-  int min = 0x7FFFFFFF;
+  int minDiff = INT_MAX;
   int flag = -1;
   for (int i = 0; i < trackNum; i++) {
-    if (!tracks[i].isVisited && abs(tracks[i].track - now) < min) {
-      min = abs(tracks[i].track - now);
+    if (!tracks[i].isVisited && abs(tracks[i].track - now) <= minDiff) {
+      minDiff = abs(tracks[i].track - now);
       flag = i;
     }
   }
   return flag;
 }
-
+bool allTracksVisited() {
+  for (int i = 0; i < trackNum; i++) {
+    if (!tracks[i].isVisited) {
+      return false;
+    }
+  }
+  return true;
+}
 /* Elevator algorithm */
 void SCAN(int start, int direction) {
   initTracks();
