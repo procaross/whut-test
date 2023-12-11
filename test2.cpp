@@ -37,11 +37,14 @@ void FCFS(int start) {
     }
   }
 
-  cout << "Track order: " << start << " → ";
+  cout << "Track order: ";
   for (const auto& track : tracks) {
-    cout << track.track << " → ";
+    if (&track == &tracks.back()) {
+      cout << track.track << endl;
+    } else {
+      cout << track.track << " → ";
+    }
   }
-  cout << endl;
 
   cout << "Total tracks traversed: " << totalTrack << endl;
   cout << endl;
@@ -75,10 +78,13 @@ void SSTF(int start) {
   }
 
   cout << "Track order: ";
-  for (int x : seq) {
-    cout << x << " → ";
+  for (const auto& track : tracks) {
+    if (&track == &tracks.back()) {
+      cout << track.track << endl;
+    } else {
+      cout << track.track << " → ";
+    }
   }
-  cout << endl;
 
   cout << "Total tracks traversed: " << totalTrack << endl << endl;
 }
